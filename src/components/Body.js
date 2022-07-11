@@ -59,55 +59,51 @@ const IssueRow = ({ data }) => {
 const Body = () => {
 
     const [search, setSearch] = useState('');
-    const [display, setDisplay] = useState( false );
-    // const [issues, setIssues] = useState([]);
-
-    const fetchData = async() =>{
-        const res = await axios.get('https://api.github.com/repos/facebook/create-react-app/issues');
-        console.log(res);
-        console.log(res.data);
-        setDisplay(res.data);
-        
-    }
+    const [display, setDisplay] = useState([]);
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
-        // setSearch(fetchData);
+        const fetchData = async() =>{
+            // const res = await axios.get('https://api.github.com/repos/facebook/create-react-app/issues');
+            // const { data } = await axios.get('https://api.github.com/repos/facebook/create-react-app/issues');
+            // console.log(res);
+            // console.log(res.data);
+            // console.log("data:", data);
+            // setDisplay(res.data);
+            // setDisplay(data);
+            
+            
+            try {
+               
+                const { data } = await axios.get('https://api.github.com/repos/facebook/create-react-app/issues');
+                console.log("Data:", data);
+                setDisplay(data);
+                setLoading(false); 
+                
+            } catch (err) {
+                console.log("Error occured when fetching data!")
+                setLoading(false); 
+            }
+            
+        }
         fetchData();
-        console.log(fetchData);
-    }, [])
-
-
-    const { loading } = display;
-
-    if (!loading || !loading.length) {
-        return <div className="loader">
-            <Loading />
-        </div>;
-    }
-
-    const filteredData = display.filter(issue => {
-        const lowerCaseTitle = issue.title.toLowerCase();
-        const lowerCaseUser = issue.user.login.toLowerCase();
-        const lowerCaseSearch = search.search.toLowerCase();
-
-        return (
-            lowerCaseTitle.includes(lowerCaseSearch) ||
-            lowerCaseUser.includes(lowerCaseSearch)
-        );
-
-    });
+    }, []) 
+  
 
     return (
         <div className='body'>
-            <div className='issue'>
+            {loading && <Loading />}
+            {(!loading && display.length > 0) && (
+                <>
+                    <div className='issue'>
                 <p className="box">
                     Filters
                 </p>
                 <input
                     type='text'
                     className='box-input'
-                    placeholder='is:issue is:open author:naziyathedev  '
+                    placeholder='is:issue is:open author:Naziya  '
                     autoFocus
                     value={search}
                     onChange={(e) => setSearch(e.target.value)} />
@@ -137,12 +133,15 @@ const Body = () => {
                     </div>
                 </div>
             </div>
+                </>
+            )}
 
         <div>
 
 {
-        filteredData.map(issue => (
-            <IssueRow key={`${issue.id} _issue_row`} issue={issue} />
+    
+        display.map(issue => (
+            <IssueRow data={issue} key={`${issue.id} _issue_row`} issue={issue} />
         ))
     }
 </div >

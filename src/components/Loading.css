@@ -19,10 +19,11 @@
   line-height:150px;
   font-family:sans-serif;
   font-size:20px;
+  /* color: hsl(212, 100%, 67%); */
   color:#2ea043;
   letter-spacing:4px;
   text-transform:uppercase;
-  text-shadow:0 0 10px #006d32;
+  text-shadow:0 0 10px #2ea043;
   box-shadow:0 0 20px rgba(0,0,0,.5);
 }
 .ring:before
@@ -36,6 +37,8 @@
   border:3px solid transparent;
   border-top:3px solid #006d32;
   border-right:3px solid #006d32;
+  /* border-top:3px solid #58a6ff;
+  border-right:3px solid #58a6ff; */
   border-radius:50%;
   animation:animateC 2s linear infinite;
 }
